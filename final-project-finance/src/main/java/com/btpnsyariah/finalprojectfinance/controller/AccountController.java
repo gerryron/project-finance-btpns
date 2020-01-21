@@ -1,5 +1,6 @@
 package com.btpnsyariah.finalprojectfinance.controller;
 
+import com.btpnsyariah.finalprojectfinance.dao.ResponseDao;
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingAccount;
 import com.btpnsyariah.finalprojectfinance.service.AccountService;
 import com.btpnsyariah.finalprojectfinance.service.DateService;
@@ -26,12 +27,17 @@ public class AccountController {
 
 
   @PostMapping(value = "/registration", headers = "Accept= application/json")
-  public ResponseEntity<FinancingAccount> createFinancingAccount(FinancingAccount financingAccount){
+  public ResponseEntity<ResponseDao> createFinancingAccount(FinancingAccount financingAccount){
     financingAccount.setDueDate(dateService.addOneYears(financingAccount.getDisbursementDate(), 1));
     accountService.createAccount(financingAccount);
     scheduleService.generateSchedule(financingAccount);
+    ResponseDao responseDao = new ResponseDao();
+    responseDao.setData(financingAccount);
+    responseDao.setCode(201);
+    responseDao.setStatus("CREATED");
+    responseDao.setMessage("Registrasi akun sukses dibuat !");
     return ResponseEntity.status(HttpStatus.CREATED)
         .contentType(MediaType.APPLICATION_JSON)
-        .body(financingAccount);
+        .body(responseDao);
   }
 }

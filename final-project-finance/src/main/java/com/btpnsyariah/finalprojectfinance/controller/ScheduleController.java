@@ -1,5 +1,6 @@
 package com.btpnsyariah.finalprojectfinance.controller;
 
+import com.btpnsyariah.finalprojectfinance.dao.ResponseDao;
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingAccount;
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingSchedule;
 import com.btpnsyariah.finalprojectfinance.service.AccountService;
@@ -30,26 +31,40 @@ public class ScheduleController {
     return financingAccounts;
   }
 
-  @PutMapping(value="/payment",headers = "Accept= application/json")
-  public ResponseEntity<FinancingSchedule> payment(FinancingSchedule financingSchedule,
-                                                   @RequestParam(value = "scheduleId",defaultValue = "")String scheduleId){
-
-    FinancingSchedule scheduleReport = scheduleService.findByScheduleId(scheduleId);
-    if (scheduleReport.isPaid()==false){
-      scheduleService.payment(financingSchedule,scheduleId);
-      FinancingSchedule scheduleData = scheduleService.findByScheduleId(scheduleId);
-      if(financingSchedule.equals(null)) {
+  @PutMapping(value="/payment/{paymentId}",headers = "Accept= application/json")
+  public ResponseEntity<ResponseDao> payment(FinancingSchedule financingSchedule, @PathVariable String paymentId) {
+    ResponseDao responseDao = new ResponseDao();
+    FinancingSchedule scheduleData = scheduleService.findByScheduleId(paymentId);
+    if (scheduleData == null) {
+      responseDao.setData(scheduleData);
+      responseDao.setCode(404);
+      responseDao.setStatus("NOT_FOUND");
+      responseDao.setMessage("paymentId tidak ditemukan");
+      return ResponseEntity
+          .status(HttpStatus.NOT_FOUND)
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(responseDao);
+    }else {
+      if (scheduleData.isPaid() == false) {
+        scheduleService.payment(financingSchedule, paymentId);
+        FinancingSchedule scheduleReport = scheduleService.findByScheduleId(paymentId);
+        responseDao.setData(scheduleReport);
+        responseDao.setCode(202);
+        responseDao.setStatus("ACCEPTED");
+        responseDao.setMessage("Pembayaran sukses dilakukan");
         return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
+            .status(HttpStatus.ACCEPTED)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(scheduleData);
-      }else {
-        return ResponseEntity
-            .status(HttpStatus.OK)
+            .body(responseDao);
+      } else {
+        responseDao.setData(scheduleData);
+        responseDao.setCode(409);
+        responseDao.setStatus("Already_Exists");
+        responseDao.setMessage("Tagihan sudah lunas");
+        return ResponseEntity.status(HttpStatus.CONFLICT)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(scheduleData);
+            .body(responseDao);
       }
     }
-    return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
   }
 }
