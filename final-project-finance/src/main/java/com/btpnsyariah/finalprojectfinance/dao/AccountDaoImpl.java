@@ -27,6 +27,6 @@ public class AccountDaoImpl implements AccountDao{
 
   @Override
   public Collection<FinancingAccount> getAccountSchedule(String accountId) {
-    return (Collection<FinancingAccount>)this.getSessionFactory().createQuery("select fa from FinancingAccount fa join fa.schedules sch where sch.financingAccount.id= :ScheduleId").setParameter("ScheduleId", accountId).list();
+    return (Collection<FinancingAccount>)this.getSessionFactory().createQuery("select fa from FinancingAccount fa join fa.schedules sch  where sch.financingAccount.id= :ScheduleId").setParameter("ScheduleId", accountId).list();
   }
 }
