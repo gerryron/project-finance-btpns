@@ -1,23 +1,20 @@
 package com.btpnsyariah.finalprojectfinance.entitty;
 
-import com.btpnsyariah.finalprojectfinance.service.DatePrefixedSequenceIdGenerator;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
 @Table(name = "Financing_Schedule")
 public class FinancingSchedule {
 
-  private String id;
+  private long id;
   private String trxId;
   private String accountId;
   private int installmentNo;
-  private double principal;
-  private double profitShare;
+  private BigDecimal principal;
+  private BigDecimal profitShare;
   private Date scheduleDate;
   private Date paymentDate;
   private boolean paid = false;
@@ -26,20 +23,12 @@ public class FinancingSchedule {
   }
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "schedule_seq")
-  @GenericGenerator(
-      name = "schedule_seq",
-      strategy = "com.btpnsyariah.finalprojectfinance.service.DatePrefixedSequenceIdGenerator",
-      parameters = {
-          @Parameter(name = DatePrefixedSequenceIdGenerator.NUMBER_FORMAT_DEFAULT, value = "%04d"),
-          @Parameter(name = DatePrefixedSequenceIdGenerator.SECRET_NUMBER_SEPARATOR_PARAMETER, value = "1140")
-      }
-  )
-  public String getId() {
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  public long getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(long id) {
     this.id = id;
   }
 
@@ -70,20 +59,20 @@ public class FinancingSchedule {
     this.installmentNo = installmentNo;
   }
 
-  public double getPrincipal() {
+  public BigDecimal getPrincipal() {
     return principal;
   }
 
-  public void setPrincipal(double principal) {
+  public void setPrincipal(BigDecimal principal) {
     this.principal = principal;
   }
 
   @Column(name = "profit_share")
-  public double getProfitShare() {
+  public BigDecimal getProfitShare() {
     return profitShare;
   }
 
-  public void setProfitShare(double profitShare) {
+  public void setProfitShare(BigDecimal profitShare) {
     this.profitShare = profitShare;
   }
 

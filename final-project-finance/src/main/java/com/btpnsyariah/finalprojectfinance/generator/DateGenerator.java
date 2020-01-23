@@ -1,13 +1,13 @@
-package com.btpnsyariah.finalprojectfinance.service;
+package com.btpnsyariah.finalprojectfinance.generator;
 
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class DateService {
+public class DateGenerator {
 
-  public DateService() {
+  public DateGenerator() {
   }
 
   public Date addMonth(Date currentDate, int amount){

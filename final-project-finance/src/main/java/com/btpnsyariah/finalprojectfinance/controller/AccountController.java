@@ -2,15 +2,13 @@ package com.btpnsyariah.finalprojectfinance.controller;
 
 import com.btpnsyariah.finalprojectfinance.dao.ResponseDao;
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingAccount;
-import com.btpnsyariah.finalprojectfinance.entitty.FinancingSchedule;
 import com.btpnsyariah.finalprojectfinance.service.AccountService;
-import com.btpnsyariah.finalprojectfinance.service.DateService;
+import com.btpnsyariah.finalprojectfinance.generator.DateGenerator;
 import com.btpnsyariah.finalprojectfinance.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,14 +22,16 @@ public class AccountController {
   @Autowired
   private ScheduleService scheduleService;
 
-  private DateService dateService = new DateService();
+  private DateGenerator dateGenerator = new DateGenerator();
 
 
   @PostMapping(value = "/registration")
   public ResponseEntity<ResponseDao> createFinancingAccount(@RequestBody FinancingAccount financingAccount){
-    financingAccount.setDueDate(dateService.addMonth(financingAccount.getDisbursementDate(), 12));
+    financingAccount.setDueDate(dateGenerator.addMonth(financingAccount.getDisbursementDate(), 12));
     accountService.createAccount(financingAccount);
     scheduleService.generateSchedule(financingAccount);
+//    List<FinancingSchedule> financingScheduleList=scheduleService.scheduleReport(financingAccount.getAccountNo());
+//    financingAccount.setFinancingScheduleList(financingScheduleList);
     ResponseDao responseDao = new ResponseDao(200,"OK","OK",financingAccount);
     return ResponseEntity.status(HttpStatus.CREATED)
         .contentType(MediaType.APPLICATION_JSON)
