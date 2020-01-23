@@ -3,7 +3,7 @@ package com.btpnsyariah.finalprojectfinance.service;
 import com.btpnsyariah.finalprojectfinance.dao.ScheduleDao;
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingAccount;
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingSchedule;
-import com.btpnsyariah.finalprojectfinance.generator.DateGenerator;
+import com.btpnsyariah.finalprojectfinance.generator.MyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +19,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 
   @Autowired
   private ScheduleDao scheduleDao;
-  private DateGenerator dateGenerator = new DateGenerator();
+  private MyGenerator myGenerator = new MyGenerator();
 
   @Override
-  public void payment(FinancingSchedule financingSchedule, String scheduleId) {
-    scheduleDao.payment(financingSchedule, scheduleId);
+  public void payment(String trx_id) {
+    scheduleDao.payment(trx_id);
   }
 
   @Override
@@ -32,8 +32,8 @@ public class ScheduleServiceImpl implements ScheduleService {
   }
 
   @Override
-  public FinancingSchedule findByScheduleId(String scheduleId) {
-    return scheduleDao.findByScheduleId(scheduleId);
+  public FinancingSchedule findByTrxId(String trx_id) {
+    return scheduleDao.findByTrxId(trx_id);
   }
 
   @Override
@@ -55,8 +55,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     Date firstDate = financingAccount.getDisbursementDate();
 
     for(int gen=1; gen<=financingAccount.getTenor(); gen++) {
-      Date getSchedule = dateGenerator.addMonth(firstDate, gen);
       FinancingSchedule fs = new FinancingSchedule();
+      Date getSchedule = myGenerator.addMonth(firstDate, gen);
+      String surrKey = myGenerator.surrogateKey(financingAccount.getId());
+
+      fs.setTrxId(surrKey);
       fs.setAccountId(financingAccount.getAccountNo());
       fs.setPrincipal(principal);
       fs.setProfitShare(profitShare);

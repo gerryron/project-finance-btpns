@@ -19,36 +19,26 @@ public class ScheduleController {
 
   @Autowired
   private ScheduleService scheduleService;
-  
-  @PutMapping(value="/payment/{paymentId}",headers = "Accept= application/json")
-  public ResponseEntity<ResponseDao> payment(FinancingSchedule financingSchedule, @PathVariable String paymentId) {
-    ResponseDao responseDao = new ResponseDao();
-    FinancingSchedule scheduleData = scheduleService.findByScheduleId(paymentId);
+
+  @PutMapping(value="/payment/{trx_id}",headers = "Accept= application/json")
+  public ResponseEntity<ResponseDao> payment(@PathVariable String trx_id) {
+    FinancingSchedule scheduleData = scheduleService.findByTrxId(trx_id);
     if (scheduleData == null) {
-      responseDao.setData(scheduleData);
-      responseDao.setCode(404);
-      responseDao.setStatus("NOT_FOUND");
-      responseDao.setMessage("paymentId tidak ditemukan");
+      ResponseDao responseDao = new ResponseDao(404,"NOT_FOUND","PaymentId tidak ditemukan", scheduleData);
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .contentType(MediaType.APPLICATION_JSON)
           .body(responseDao);
     }else {
-      if (scheduleData.isPaid() == false) {
-        scheduleService.payment(financingSchedule, paymentId);
-        FinancingSchedule scheduleReport = scheduleService.findByScheduleId(paymentId);
-        responseDao.setData(scheduleReport);
-        responseDao.setCode(202);
-        responseDao.setStatus("ACCEPTED");
-        responseDao.setMessage("Pembayaran sukses dilakukan");
+      if (!scheduleData.isPaid()) {
+        scheduleService.payment(trx_id);
+        FinancingSchedule scheduleReport = scheduleService.findByTrxId(trx_id);
+        ResponseDao responseDao = new ResponseDao(202, "ACCEPTED", "Pembayaran sukses dilakukan", scheduleReport);
         return ResponseEntity
             .status(HttpStatus.ACCEPTED)
             .contentType(MediaType.APPLICATION_JSON)
             .body(responseDao);
       } else {
-        responseDao.setData(scheduleData);
-        responseDao.setCode(409);
-        responseDao.setStatus("Already_Exists");
-        responseDao.setMessage("Tagihan sudah lunas");
+        ResponseDao responseDao = new ResponseDao(409,"ALREADY_EXIST","Tagihan sudah dibayar", scheduleData);
         return ResponseEntity.status(HttpStatus.CONFLICT)
             .contentType(MediaType.APPLICATION_JSON)
             .body(responseDao);
@@ -56,14 +46,10 @@ public class ScheduleController {
     }
   }
 
-  @GetMapping(value = "/list/{accountId}")
+  @GetMapping(value = "/{accountId}")
   public ResponseEntity<ResponseDao> scheduleReport(@PathVariable String accountId){
     List<FinancingSchedule> financingSchedules = scheduleService.scheduleReport(accountId);
-    ResponseDao responseDao = new ResponseDao();
-    responseDao.setData(financingSchedules);
-    responseDao.setCode(200);
-    responseDao.setStatus("OK");
-    responseDao.setMessage("OK");
+    ResponseDao responseDao = new ResponseDao(200, "OK", "Schedule ditemukan", financingSchedules);
     return ResponseEntity.status(HttpStatus.CONFLICT)
         .contentType(MediaType.APPLICATION_JSON)
         .body(responseDao);

@@ -33,9 +33,9 @@ public class AccountDaoImpl implements AccountDao{
   }
 
   @Override
-  public FinancingAccount findByAccountId(String accountId) {
-    return (FinancingAccount)this.getSessionFactory().createQuery("from FinancingAccount where id=:accountId")
-        .setParameter("accountId", accountId).uniqueResult();
+  public FinancingAccount findByAccountNo(String accountNo) {
+    return (FinancingAccount)this.getSessionFactory().createQuery("from FinancingAccount where accountNo=:accountId")
+        .setParameter("accountId", accountNo).uniqueResult();
   }
 
 }

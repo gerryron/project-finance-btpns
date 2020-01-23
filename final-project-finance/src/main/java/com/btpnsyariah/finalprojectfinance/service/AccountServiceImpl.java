@@ -26,8 +26,8 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public FinancingAccount findByAccountId(String accountId) {
-    return accountDao.findByAccountId(accountId);
+  public FinancingAccount findByAccountNo(String accountNo) {
+    return accountDao.findByAccountNo(accountNo);
   }
 
 }

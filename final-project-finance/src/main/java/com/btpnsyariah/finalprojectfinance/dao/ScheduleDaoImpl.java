@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 @Transactional
@@ -23,9 +22,9 @@ public class ScheduleDaoImpl implements ScheduleDao{
   }
 
   @Override
-  public FinancingSchedule findByScheduleId(String scheduleId) {
-    return (FinancingSchedule)this.getSessionFactory().createQuery("from FinancingSchedule where id=:scheduleId")
-        .setParameter("scheduleId", scheduleId).uniqueResult();
+  public FinancingSchedule findByTrxId(String trx_id) {
+    return (FinancingSchedule)this.getSessionFactory().createQuery("from FinancingSchedule where trxId=:trx_id")
+        .setParameter("trx_id", trx_id).uniqueResult();
   }
 
   @Override
@@ -35,15 +34,12 @@ public class ScheduleDaoImpl implements ScheduleDao{
   }
 
   @Override
-  public void payment(FinancingSchedule financingSchedule, String scheduleId) {
-    String uniqueId = UUID.randomUUID().toString();
-
-    FinancingSchedule schedule = (FinancingSchedule) this.getSessionFactory()
-        .createQuery("from FinancingSchedule where id=:paymentId")
-        .setParameter("paymentId", scheduleId).uniqueResult();
+  public void payment(String trx_id) {
+    FinancingSchedule schedule = (FinancingSchedule)this.getSessionFactory()
+        .createQuery("from FinancingSchedule where trxId=:trx_id")
+        .setParameter("trx_id", trx_id).uniqueResult();
     schedule.setPaymentDate(new Date());
     schedule.setPaid(true);
-    schedule.setTrxId(uniqueId);
     this.getSessionFactory().saveOrUpdate(schedule);
   }
 

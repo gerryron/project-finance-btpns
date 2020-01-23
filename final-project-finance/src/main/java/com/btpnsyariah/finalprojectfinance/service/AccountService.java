@@ -9,7 +9,7 @@ import java.util.List;
 public interface AccountService {
 
   void createAccount(FinancingAccount financingAccount);
-  FinancingAccount findByAccountId(String accountId);
+  FinancingAccount findByAccountNo(String accountNo);
   List<FinancingAccount> accountList();
 
 }

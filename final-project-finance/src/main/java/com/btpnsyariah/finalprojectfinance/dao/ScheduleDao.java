@@ -7,7 +7,7 @@ import java.util.List;
 public interface ScheduleDao {
 
   void createSchedule (FinancingSchedule financingSchedule);
-  void payment(FinancingSchedule financingSchedule, String scheduleId);
-  FinancingSchedule findByScheduleId(String scheduleId);
+  void payment(String trx_id);
+  FinancingSchedule findByTrxId(String trx_id);
   List<FinancingSchedule> scheduleReport(String accountId);
 }
