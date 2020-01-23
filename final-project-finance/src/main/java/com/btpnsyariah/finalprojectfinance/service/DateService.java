@@ -18,11 +18,4 @@ public class DateService {
     return currentDatePlusMonth;
   }
 
-  public Date addOneYears(Date currentDate, int amount){
-    LocalDateTime localDateTime= currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-    localDateTime = localDateTime.plusYears(1);
-
-    Date currentDatePlusYears = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    return currentDatePlusYears;
-  }
 }

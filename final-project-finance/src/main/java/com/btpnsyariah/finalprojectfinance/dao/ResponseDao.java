@@ -7,6 +7,16 @@ public class ResponseDao <T extends Object>{
   private String message;
   private T data;
 
+  public ResponseDao() {
+  }
+
+  public ResponseDao(int code, String status, String message, T data) {
+    this.code = code;
+    this.status = status;
+    this.message = message;
+    this.data = data;
+  }
+
   public int getCode() {
     return code;
   }

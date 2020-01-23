@@ -21,7 +21,6 @@ public class FinancingSchedule {
   private Date scheduleDate;
   private Date paymentDate;
   private boolean paid = false;
-  private FinancingAccount financingAccount;
 
   public FinancingSchedule() {
   }
@@ -116,13 +115,4 @@ public class FinancingSchedule {
     this.paid = paid;
   }
 
-  @ManyToOne
-  @JoinColumn(name = "accountSchedule_Id")
-  public FinancingAccount getFinancingAccount() {
-    return financingAccount;
-  }
-
-  public void setFinancingAccount(FinancingAccount financingAccount) {
-    this.financingAccount = financingAccount;
-  }
 }

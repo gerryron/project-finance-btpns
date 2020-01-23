@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = {"/financingSchedule"})
@@ -19,18 +19,7 @@ public class ScheduleController {
 
   @Autowired
   private ScheduleService scheduleService;
-
-  @Autowired
-  private AccountService accountService;
-
-
-  @GetMapping(value = "/cekSchedule/{accountId}",produces = MediaType.APPLICATION_JSON_VALUE)
-  public Collection<FinancingAccount> AccountSchedule (@PathVariable(value = "accountId") String accountId){
-    Collection<FinancingAccount> financingAccounts = accountService.getAccountSchedule(accountId);
-    System.out.println(financingAccounts);
-    return financingAccounts;
-  }
-
+  
   @PutMapping(value="/payment/{paymentId}",headers = "Accept= application/json")
   public ResponseEntity<ResponseDao> payment(FinancingSchedule financingSchedule, @PathVariable String paymentId) {
     ResponseDao responseDao = new ResponseDao();
@@ -40,8 +29,7 @@ public class ScheduleController {
       responseDao.setCode(404);
       responseDao.setStatus("NOT_FOUND");
       responseDao.setMessage("paymentId tidak ditemukan");
-      return ResponseEntity
-          .status(HttpStatus.NOT_FOUND)
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .contentType(MediaType.APPLICATION_JSON)
           .body(responseDao);
     }else {
@@ -66,5 +54,18 @@ public class ScheduleController {
             .body(responseDao);
       }
     }
+  }
+
+  @GetMapping(value = "/list/{accountId}")
+  public ResponseEntity<ResponseDao> scheduleReport(@PathVariable String accountId){
+    List<FinancingSchedule> financingSchedules = scheduleService.scheduleReport(accountId);
+    ResponseDao responseDao = new ResponseDao();
+    responseDao.setData(financingSchedules);
+    responseDao.setCode(200);
+    responseDao.setStatus("OK");
+    responseDao.setMessage("OK");
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(responseDao);
   }
 }

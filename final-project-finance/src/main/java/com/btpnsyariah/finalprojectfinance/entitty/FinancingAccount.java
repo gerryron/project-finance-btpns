@@ -10,6 +10,8 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Financing_Account")
@@ -24,11 +26,8 @@ public class FinancingAccount {
   private Date disbursementDate;
   private Date dueDate;
 
-  private Collection<FinancingSchedule> schedules;
-
   public FinancingAccount() {
   }
-
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "acc_seq")
@@ -98,6 +97,7 @@ public class FinancingAccount {
     return disbursementDate;
   }
 
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   public void setDisbursementDate(Date disbursementDate) {
     this.disbursementDate = disbursementDate;
   }
@@ -112,12 +112,4 @@ public class FinancingAccount {
     this.dueDate = dueDate;
   }
 
-  @OneToMany(mappedBy = "financingAccount", cascade = CascadeType.ALL)
-  public Collection<FinancingSchedule> getSchedules() {
-    return schedules;
-  }
-
-  public void setSchedules(Collection<FinancingSchedule> schedules) {
-    this.schedules = schedules;
-  }
 }

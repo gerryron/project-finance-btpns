@@ -1,13 +1,15 @@
 package com.btpnsyariah.finalprojectfinance.service;
 
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingAccount;
+import com.btpnsyariah.finalprojectfinance.entitty.FinancingSchedule;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface AccountService {
 
-  public void createAccount(FinancingAccount financingAccount);
-
-  public Collection<FinancingAccount> getAccountSchedule(String accountId);
+  void createAccount(FinancingAccount financingAccount);
+  FinancingAccount findByAccountId(String accountId);
+  List<FinancingAccount> accountList();
 
 }

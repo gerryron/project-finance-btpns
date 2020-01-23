@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -25,6 +26,12 @@ public class ScheduleDaoImpl implements ScheduleDao{
   public FinancingSchedule findByScheduleId(String scheduleId) {
     return (FinancingSchedule)this.getSessionFactory().createQuery("from FinancingSchedule where id=:scheduleId")
         .setParameter("scheduleId", scheduleId).uniqueResult();
+  }
+
+  @Override
+  public List<FinancingSchedule> scheduleReport(String accountId) {
+    return (List<FinancingSchedule>)this.getSessionFactory().createQuery("from FinancingSchedule where accountId=:accountId")
+        .setParameter("accountId", accountId).list();
   }
 
   @Override

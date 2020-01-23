@@ -2,10 +2,12 @@ package com.btpnsyariah.finalprojectfinance.service;
 
 import com.btpnsyariah.finalprojectfinance.dao.AccountDao;
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingAccount;
+import com.btpnsyariah.finalprojectfinance.entitty.FinancingSchedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -19,7 +21,13 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public Collection<FinancingAccount> getAccountSchedule(String accountId) {
-    return accountDao.getAccountSchedule(accountId);
+  public List<FinancingAccount> accountList() {
+    return accountDao.accountList();
   }
+
+  @Override
+  public FinancingAccount findByAccountId(String accountId) {
+    return accountDao.findByAccountId(accountId);
+  }
+
 }

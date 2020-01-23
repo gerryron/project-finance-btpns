@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -20,6 +21,11 @@ public class ScheduleServiceImpl implements ScheduleService {
   @Override
   public void payment(FinancingSchedule financingSchedule, String scheduleId) {
     scheduleDao.payment(financingSchedule, scheduleId);
+  }
+
+  @Override
+  public List<FinancingSchedule> scheduleReport(String accountId) {
+    return scheduleDao.scheduleReport(accountId);
   }
 
   @Override
