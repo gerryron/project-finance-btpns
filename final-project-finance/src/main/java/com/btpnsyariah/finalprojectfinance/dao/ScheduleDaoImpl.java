@@ -40,6 +40,12 @@ public class ScheduleDaoImpl implements ScheduleDao{
         .setParameter("trx_id", trx_id).uniqueResult();
     schedule.setPaymentDate(new Date());
     schedule.setPaid(true);
+    if(schedule.getPaymentDate().before(schedule.getScheduleDate())){
+      schedule.setPaymentStatement("ontime");
+    }else {
+      schedule.setPaymentStatement("late");
+    }
+    schedule.setPaymentStatement(schedule.getPaymentStatement());
     this.getSessionFactory().saveOrUpdate(schedule);
   }
 

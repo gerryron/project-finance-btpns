@@ -18,6 +18,7 @@ public class FinancingSchedule {
   private BigDecimal profitShare;
   private Date scheduleDate;
   private Date paymentDate;
+  private String paymentStatement;
   private boolean paid = false;
   private FinancingAccount financingAccount;
 
@@ -105,6 +106,14 @@ public class FinancingSchedule {
 
   public void setPaid(boolean paid) {
     this.paid = paid;
+  }
+
+  public String getPaymentStatement() {
+    return paymentStatement;
+  }
+
+  public void setPaymentStatement(String paymentStatement) {
+    this.paymentStatement = paymentStatement;
   }
 
   @ManyToOne
