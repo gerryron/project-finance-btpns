@@ -1,5 +1,6 @@
 package com.btpnsyariah.finalprojectfinance.entitty;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -85,6 +86,7 @@ public class FinancingAccount {
 
   @Column(name = "disbursement_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   @FutureOrPresent(message = "Masukkan tanggal yang valid")
   public Date getDisbursementDate() {
     return disbursementDate;
@@ -96,6 +98,7 @@ public class FinancingAccount {
   }
 
   @Column(name = "due_date")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   public Date getDueDate() {
     return dueDate;

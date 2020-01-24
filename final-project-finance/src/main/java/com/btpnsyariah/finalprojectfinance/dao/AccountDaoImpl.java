@@ -17,7 +17,7 @@ public class AccountDaoImpl implements AccountDao {
 
   @Override
   public List<FinancingAccount> accountList() {
-    return this.getSessionFactory().createQuery("from FinancingAccount").list();
+    return this.getSessionFactory().createQuery("from FinancingAccount fa LEFT JOIN FETCH fa.scheduleList").list();
   }
 
   private Session getSessionFactory(){

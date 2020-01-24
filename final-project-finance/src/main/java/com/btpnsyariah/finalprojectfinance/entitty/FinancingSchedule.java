@@ -1,5 +1,6 @@
 package com.btpnsyariah.finalprojectfinance.entitty;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
@@ -82,6 +83,7 @@ public class FinancingSchedule {
 
   @Column(name = "schedule_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   public Date getScheduleDate() {
     return scheduleDate;
   }
@@ -92,6 +94,7 @@ public class FinancingSchedule {
 
   @Column(name = "payment_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   public Date getPaymentDate() {
     return paymentDate;
   }
