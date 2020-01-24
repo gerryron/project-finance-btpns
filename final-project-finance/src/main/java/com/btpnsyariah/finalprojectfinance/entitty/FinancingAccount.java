@@ -1,11 +1,15 @@
 package com.btpnsyariah.finalprojectfinance.entitty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Financing_Account")
@@ -19,13 +23,15 @@ public class FinancingAccount {
   private BigDecimal margin = new BigDecimal("0.3");
   private Date disbursementDate;
   private Date dueDate;
-//  private List<FinancingSchedule> financingScheduleList;
+
+  private List<FinancingSchedule> scheduleList = new ArrayList<>();
 
   public FinancingAccount() {
   }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   public long getId() {
     return id;
   }
@@ -99,7 +105,12 @@ public class FinancingAccount {
     this.dueDate = dueDate;
   }
 
-//  public void setFinancingScheduleList(List<FinancingSchedule> financingScheduleList) {
-//    this.financingScheduleList = financingScheduleList;
-//  }
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "financingAccount")
+  public List<FinancingSchedule> getScheduleList() {
+    return scheduleList;
+  }
+
+  public void setScheduleList(List<FinancingSchedule> scheduleList) {
+    this.scheduleList = scheduleList;
+  }
 }

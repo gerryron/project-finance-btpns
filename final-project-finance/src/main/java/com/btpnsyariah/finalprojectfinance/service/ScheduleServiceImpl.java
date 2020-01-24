@@ -53,7 +53,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         .multiply(installments).setScale(0, RoundingMode.HALF_UP);
 
     Date firstDate = financingAccount.getDisbursementDate();
-
     for(int gen=1; gen<=financingAccount.getTenor(); gen++) {
       FinancingSchedule fs = new FinancingSchedule();
       Date getSchedule = myGenerator.addMonth(firstDate, gen);
@@ -65,7 +64,10 @@ public class ScheduleServiceImpl implements ScheduleService {
       fs.setProfitShare(profitShare);
       fs.setInstallmentNo(gen);
       fs.setScheduleDate(getSchedule);
+      fs.setFinancingAccount(financingAccount);
+      financingAccount.getScheduleList().add(fs);
       scheduleDao.createSchedule(fs);
     }
+
   }
 }

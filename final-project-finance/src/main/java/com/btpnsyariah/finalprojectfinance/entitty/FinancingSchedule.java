@@ -1,5 +1,6 @@
 package com.btpnsyariah.finalprojectfinance.entitty;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -18,12 +19,14 @@ public class FinancingSchedule {
   private Date scheduleDate;
   private Date paymentDate;
   private boolean paid = false;
+  private FinancingAccount financingAccount;
 
   public FinancingSchedule() {
   }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   public long getId() {
     return id;
   }
@@ -104,4 +107,14 @@ public class FinancingSchedule {
     this.paid = paid;
   }
 
+  @ManyToOne
+  @JoinColumn(name = "financing_account_id")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  public FinancingAccount getFinancingAccount() {
+    return financingAccount;
+  }
+
+  public void setFinancingAccount(FinancingAccount financingAccount) {
+    this.financingAccount = financingAccount;
+  }
 }
