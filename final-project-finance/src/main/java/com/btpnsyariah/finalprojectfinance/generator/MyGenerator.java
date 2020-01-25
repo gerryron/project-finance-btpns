@@ -13,7 +13,7 @@ public class MyGenerator {
 
   public Date addMonth(Date currentDate, int amount){
     LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-    localDateTime = localDateTime.plusMonths(amount);
+    localDateTime = localDateTime.plusMonths(amount).plusHours(17);
 
     return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
   }

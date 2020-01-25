@@ -11,45 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 
 @RestController
-@RequestMapping(value = {"/financingAccount"})
+@RequestMapping(value = {"/financing_account"})
 public class AccountController {
 
   @Autowired
   private AccountService accountService;
 
-  @Autowired
-  private ScheduleService scheduleService;
-
-  private MyGenerator generator = new MyGenerator();
-
-
   @PostMapping(value = "/registration")
   public ResponseEntity<ResponseDao> createFinancingAccount(@RequestBody FinancingAccount financingAccount){
-    financingAccount.setDueDate(generator.addMonth(financingAccount.getDisbursementDate(), 12));
-    financingAccount.setAccountNo(UUID.randomUUID().toString());
-    accountService.createAccount(financingAccount);
-    scheduleService.generateSchedule(financingAccount);
-    ResponseDao responseDao = new ResponseDao(201,"CREATED","Akun selesai dibuat", financingAccount);
-    return ResponseEntity.status(HttpStatus.CREATED)
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(responseDao);
+    return accountService.registration(financingAccount);
   }
 
   @GetMapping(value = "/{accountNo}", headers = "Accept=application/json")
-  public ResponseEntity<ResponseDao> findByAccountId(@PathVariable(value = "accountNo") String accountNo){
-    FinancingAccount financingAccount = accountService.findByAccountNo(accountNo);
-    List<FinancingSchedule> scheduleList = scheduleService.scheduleReport(financingAccount.getAccountNo());
-    financingAccount.setScheduleList(scheduleList);
-    ResponseDao responseDao = new ResponseDao(200,"OK","account ditemukan", financingAccount);
-    return ResponseEntity.status(HttpStatus.OK)
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(responseDao);
+  public ResponseEntity<ResponseDao> findByAccountNo(@PathVariable(value = "accountNo") String accountNo){
+    return accountService.findByAccountNo(accountNo);
   }
 
   @GetMapping(value = "/list", headers = "Accept=application/json")

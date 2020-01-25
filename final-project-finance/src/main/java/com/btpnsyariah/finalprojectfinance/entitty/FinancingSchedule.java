@@ -111,6 +111,7 @@ public class FinancingSchedule {
     this.paid = paid;
   }
 
+  @Column(name = "payment_statement")
   public String getPaymentStatement() {
     return paymentStatement;
   }

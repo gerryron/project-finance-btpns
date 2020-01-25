@@ -1,10 +1,14 @@
 package com.btpnsyariah.finalprojectfinance.service;
 
+import com.btpnsyariah.finalprojectfinance.dao.ResponseDao;
 import com.btpnsyariah.finalprojectfinance.dao.ScheduleDao;
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingAccount;
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingSchedule;
 import com.btpnsyariah.finalprojectfinance.generator.MyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -22,18 +26,38 @@ public class ScheduleServiceImpl implements ScheduleService {
   private MyGenerator myGenerator = new MyGenerator();
 
   @Override
-  public void payment(String trx_id) {
-    scheduleDao.payment(trx_id);
+  public ResponseEntity<ResponseDao> scheduleReport(String accountId) {
+    List<FinancingSchedule> financingSchedules = scheduleDao.scheduleReport(accountId);
+    ResponseDao responseDao = new ResponseDao(200, "OK", "Schedule ditemukan", financingSchedules);
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(responseDao);
   }
 
   @Override
-  public List<FinancingSchedule> scheduleReport(String accountId) {
-    return scheduleDao.scheduleReport(accountId);
-  }
-
-  @Override
-  public FinancingSchedule findByTrxId(String trx_id) {
-    return scheduleDao.findByTrxId(trx_id);
+  public ResponseEntity<ResponseDao> payment (String trx_id) {
+    FinancingSchedule scheduleData = scheduleDao.findByTrxId(trx_id);
+    if (scheduleData == null) {
+      ResponseDao responseDao = new ResponseDao(404,"NOT_FOUND","PaymentId tidak ditemukan", scheduleData);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(responseDao);
+    }else {
+      if (!scheduleData.isPaid()) {
+        scheduleDao.payment(trx_id);
+        FinancingSchedule scheduleReport = scheduleDao.findByTrxId(trx_id);
+        ResponseDao responseDao = new ResponseDao(202, "ACCEPTED", "Pembayaran sukses dilakukan", scheduleReport);
+        return ResponseEntity
+            .status(HttpStatus.ACCEPTED)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(responseDao);
+      } else {
+        ResponseDao responseDao = new ResponseDao(409, "ALREADY_EXIST", "Tagihan sudah dibayar", scheduleData);
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(responseDao);
+      }
+    }
   }
 
   @Override
