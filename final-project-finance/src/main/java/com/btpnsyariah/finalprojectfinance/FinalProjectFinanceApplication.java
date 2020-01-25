@@ -12,9 +12,16 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Properties;
 
 @SpringBootApplication(exclude = {
@@ -22,6 +29,7 @@ import java.util.Properties;
     DataSourceTransactionManagerAutoConfiguration.class,
     HibernateJpaAutoConfiguration.class
 },scanBasePackages = {"com"})
+@EnableSwagger2
 public class FinalProjectFinanceApplication {
 
   @Autowired
@@ -68,5 +76,26 @@ public class FinalProjectFinanceApplication {
   public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory){
     HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
     return transactionManager;
+  }
+
+  @Bean
+  public Docket swaggerConfiguration(){
+    return new Docket(DocumentationType.SWAGGER_2)
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("com.btpnsyariah"))
+        .build()
+        .apiInfo(apiDetails());
+  }
+
+  private ApiInfo apiDetails(){
+    return new ApiInfo(
+        "Finance Api Documentation",
+        "Syariah Financing - Final Project",
+        "1.0",
+        "SHIFTED BTPNS",
+        new springfox.documentation.service.Contact("Gerryron", "https://github.com/gerryron", "gerryron02@gmail.com"),
+        "API Lisence",
+        "https://github.com/gerryron",
+        Collections.emptyList());
   }
 }

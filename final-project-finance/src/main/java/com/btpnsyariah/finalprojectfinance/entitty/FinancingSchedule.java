@@ -19,7 +19,7 @@ public class FinancingSchedule {
   private BigDecimal profitShare;
   private Date scheduleDate;
   private Date paymentDate;
-  private String paymentStatement;
+  private String paymentStatement = "belum lunas";
   private boolean paid = false;
   private FinancingAccount financingAccount;
 
