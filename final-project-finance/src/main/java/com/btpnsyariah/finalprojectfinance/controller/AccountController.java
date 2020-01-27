@@ -2,17 +2,13 @@ package com.btpnsyariah.finalprojectfinance.controller;
 
 import com.btpnsyariah.finalprojectfinance.dao.ResponseDao;
 import com.btpnsyariah.finalprojectfinance.entitty.FinancingAccount;
-import com.btpnsyariah.finalprojectfinance.entitty.FinancingSchedule;
 import com.btpnsyariah.finalprojectfinance.service.AccountService;
-import com.btpnsyariah.finalprojectfinance.generator.MyGenerator;
-import com.btpnsyariah.finalprojectfinance.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 
 @RestController

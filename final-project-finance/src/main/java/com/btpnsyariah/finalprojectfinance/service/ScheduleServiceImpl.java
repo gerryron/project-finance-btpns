@@ -29,7 +29,7 @@ public class ScheduleServiceImpl implements ScheduleService {
   public ResponseEntity<ResponseDao> scheduleReport(String accountId) {
     List<FinancingSchedule> financingSchedules = scheduleDao.scheduleReport(accountId);
     ResponseDao responseDao = new ResponseDao(200, "OK", "Schedule ditemukan", financingSchedules);
-    return ResponseEntity.status(HttpStatus.CONFLICT)
+    return ResponseEntity.status(HttpStatus.OK)
         .contentType(MediaType.APPLICATION_JSON)
         .body(responseDao);
   }

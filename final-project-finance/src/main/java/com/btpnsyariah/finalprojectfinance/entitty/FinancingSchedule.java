@@ -19,8 +19,8 @@ public class FinancingSchedule {
   private BigDecimal profitShare;
   private Date scheduleDate;
   private Date paymentDate;
-  private String paymentStatement = "belum lunas";
-  private boolean paid = false;
+  private String paymentStatement;
+  private boolean paid;
   private FinancingAccount financingAccount;
 
   public FinancingSchedule() {
@@ -82,7 +82,7 @@ public class FinancingSchedule {
   }
 
   @Column(name = "schedule_date")
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @DateTimeFormat(pattern = "yyyy-M-d")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   public Date getScheduleDate() {
     return scheduleDate;
@@ -93,7 +93,7 @@ public class FinancingSchedule {
   }
 
   @Column(name = "payment_date")
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @DateTimeFormat(pattern = "yyyy-M-d")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   public Date getPaymentDate() {
     return paymentDate;

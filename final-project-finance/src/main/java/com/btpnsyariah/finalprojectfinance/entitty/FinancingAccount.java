@@ -84,7 +84,7 @@ public class FinancingAccount {
   }
 
   @Column(name = "disbursement_date")
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @DateTimeFormat(pattern = "yyyy-M-d")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   @FutureOrPresent(message = "Masukkan tanggal yang valid")
   public Date getDisbursementDate() {
@@ -98,7 +98,7 @@ public class FinancingAccount {
 
   @Column(name = "due_date")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @DateTimeFormat(pattern = "yyyy-M-d")
   public Date getDueDate() {
     return dueDate;
   }
